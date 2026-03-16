@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from models import User, Task, Assignment
-from app import db, bcrypt
+from config import db, bcrypt
 
 def register_routes(app):
     @app.route("/register", methods=["POST"])
@@ -50,15 +50,25 @@ def register_routes(app):
     @app.route("/tasks/<int:id>", methods=["PATCH"])
     def update_task(id):
         task = Task.query.get(id)
+        if not task:
+            return jsonify({"error": "Task not found"}), 404
         data = request.json
         if "completed" in data:
             task.completed = data["completed"]
+        if "title" in data:
+            task.title = data["title"]
+        if "description" in data:
+            task.description = data["description"]
+        if "priority" in data:
+            task.priority = data["priority"]
         db.session.commit()
         return jsonify({"message": "Task updated"})
 
     @app.route("/tasks/<int:id>", methods=["DELETE"])
     def delete_task(id):
         task = Task.query.get(id)
+        if not task:
+            return jsonify({"error": "Task not found"}), 404
         db.session.delete(task)
         db.session.commit()
         return jsonify({"message": "Task deleted"})
@@ -83,6 +93,8 @@ def register_routes(app):
     @app.route("/assignments/<int:id>", methods=["PATCH"])
     def update_assignment(id):
         assignment = Assignment.query.get(id)
+        if not assignment:
+            return jsonify({"error": "Assignment not found"}), 404
         data = request.json
         if "completed" in data:
             assignment.completed = data["completed"]

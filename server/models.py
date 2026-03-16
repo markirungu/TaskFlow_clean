@@ -1,7 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-db = SQLAlchemy()
-bcrypt = Bcrypt()
+# models.py
+from config import db  # ← use the ONE db from config
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -29,7 +27,6 @@ class Task(db.Model):
     description = db.Column(db.String(300))
     priority = db.Column(db.String(20))
     completed = db.Column(db.Boolean, default=False)
-    
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     assignments = db.relationship('Assignment', backref='task', cascade='all, delete-orphan')
     

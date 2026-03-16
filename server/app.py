@@ -1,29 +1,13 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_bcrypt import Bcrypt
-from flask_cors import CORS
-
-db = SQLAlchemy()
-migrate = Migrate()
-bcrypt = Bcrypt()
-
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    
-    db.init_app(app)
-    migrate.init_app(app, db)
-    bcrypt.init_app(app)
-    CORS(app)
-    
-    from routes import register_routes
-    register_routes(app)
-    
-    return app
+# app.py
+from config import create_app, db, bcrypt
 
 app = create_app()
+
+# Models must be imported AFTER app is created so they register correctly
+from models import User, Task, Assignment
+from routes import register_routes
+
+register_routes(app)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
