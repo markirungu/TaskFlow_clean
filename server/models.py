@@ -1,5 +1,4 @@
-# models.py
-from config import db  # ← use the ONE db from config
+from config import db  
 
 class User(db.Model):
     __tablename__ = 'users'
