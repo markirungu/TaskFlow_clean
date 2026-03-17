@@ -1,6 +1,7 @@
 TaskFlow
 
-Task management application for teams to create tasks, assign them to multiple users, and track progress.
+This is a task management application for teams to create users, create tasks then assign them to multiple users, and track progress.
+As a group, after a lot of meetings, we decided to do something very minimal and used the rubric as a guide. We anticipate feedback to improve and further better our software engineering journey.
 
 ## Tech Stack
 - **Backend**: Flask, SQLAlchemy, Flask-Bcrypt
