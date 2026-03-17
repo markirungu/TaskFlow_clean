@@ -1,6 +1,8 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function UserForm({ fetchUsers }) {
   const formik = useFormik({
     initialValues: { username: '', email: '', password: 'password' },
@@ -9,7 +11,7 @@ function UserForm({ fetchUsers }) {
       email: yup.string().required('Required').email('Invalid email')
     }),
     onSubmit: (values, { resetForm }) => {
-      fetch('/register', {
+      fetch(`${API}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values)
@@ -26,10 +28,8 @@ function UserForm({ fetchUsers }) {
       <form onSubmit={formik.handleSubmit}>
         <input name="username" placeholder="Username" onChange={formik.handleChange} value={formik.values.username} />
         {formik.errors.username && <div className="error">{formik.errors.username}</div>}
-        
         <input name="email" type="email" placeholder="Email" onChange={formik.handleChange} value={formik.values.email} />
         {formik.errors.email && <div className="error">{formik.errors.email}</div>}
-        
         <button type="submit">Create User</button>
       </form>
     </div>

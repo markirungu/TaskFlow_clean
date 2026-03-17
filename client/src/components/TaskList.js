@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function TaskList({ tasks, fetchTasks }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', priority: 'Medium' });
 
   const handleDelete = (id) => {
-    fetch(`/tasks/${id}`, { method: 'DELETE' })
+    fetch(`${API}/tasks/${id}`, { method: 'DELETE' })
       .then(() => fetchTasks());
   };
 
@@ -23,7 +25,7 @@ function TaskList({ tasks, fetchTasks }) {
   };
 
   const handleEditSubmit = (id) => {
-    fetch(`/tasks/${id}`, {
+    fetch(`${API}/tasks/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editForm)
@@ -34,7 +36,7 @@ function TaskList({ tasks, fetchTasks }) {
   };
 
   const toggleComplete = (task) => {
-    fetch(`/tasks/${task.id}`, {
+    fetch(`${API}/tasks/${task.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: !task.completed })

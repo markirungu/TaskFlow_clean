@@ -7,6 +7,8 @@ import TaskForm from './components/forms/TaskForm';
 import UserForm from './components/forms/UserForm';
 import AssignmentForm from './components/forms/AssignmentForm';
 
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function App() {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
@@ -14,29 +16,26 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetchTasks(),
-      fetchUsers(),
-      fetchAssignments()
-    ]).then(() => setLoading(false));
+    Promise.all([fetchTasks(), fetchUsers(), fetchAssignments()])
+      .then(() => setLoading(false));
   }, []);
 
   const fetchTasks = () => {
-    return fetch('/tasks')
+    return fetch(`${API}/tasks`)
       .then(res => res.json())
       .then(data => setTasks(data))
       .catch(err => console.error('Error fetching tasks:', err));
   };
 
   const fetchUsers = () => {
-    return fetch('/users')
+    return fetch(`${API}/users`)
       .then(res => res.json())
       .then(data => setUsers(data))
       .catch(err => console.error('Error fetching users:', err));
   };
 
   const fetchAssignments = () => {
-    return fetch('/assignments')
+    return fetch(`${API}/assignments`)
       .then(res => res.json())
       .then(data => setAssignments(data))
       .catch(err => console.error('Error fetching assignments:', err));
@@ -54,35 +53,17 @@ function App() {
         <NavLink to="/users/new">+ New User</NavLink>
         <NavLink to="/assignments/new">+ New Assignment</NavLink>
       </nav>
-
       <div className="container">
         <Routes>
-          <Route path="/" element={
-            <TaskList tasks={tasks} fetchTasks={fetchTasks} users={users} />
-          } />
-          <Route path="/users" element={
-            <UserList users={users} fetchUsers={fetchUsers} />
-          } />
+          <Route path="/" element={<TaskList tasks={tasks} fetchTasks={fetchTasks} users={users} />} />
+          <Route path="/users" element={<UserList users={users} fetchUsers={fetchUsers} />} />
           <Route path="/assignments" element={
-            <AssignmentList 
-              assignments={assignments} 
-              fetchAssignments={fetchAssignments}
-              users={users}
-              tasks={tasks}
-            />
+            <AssignmentList assignments={assignments} fetchAssignments={fetchAssignments} users={users} tasks={tasks} />
           } />
-          <Route path="/tasks/new" element={
-            <TaskForm fetchTasks={fetchTasks} users={users} />
-          } />
-          <Route path="/users/new" element={
-            <UserForm fetchUsers={fetchUsers} />
-          } />
+          <Route path="/tasks/new" element={<TaskForm fetchTasks={fetchTasks} users={users} />} />
+          <Route path="/users/new" element={<UserForm fetchUsers={fetchUsers} />} />
           <Route path="/assignments/new" element={
-            <AssignmentForm 
-              fetchAssignments={fetchAssignments}
-              users={users}
-              tasks={tasks}
-            />
+            <AssignmentForm fetchAssignments={fetchAssignments} users={users} tasks={tasks} />
           } />
         </Routes>
       </div>

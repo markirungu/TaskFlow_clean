@@ -1,6 +1,8 @@
+const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function AssignmentList({ assignments, fetchAssignments, users, tasks }) {
   const toggleComplete = (assignment) => {
-    fetch(`/assignments/${assignment.id}`, {
+    fetch(`${API}/assignments/${assignment.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: !assignment.completed })
