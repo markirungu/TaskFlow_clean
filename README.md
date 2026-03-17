@@ -31,9 +31,7 @@ npm start
 ```
 The app should start up on your local host.
 
-## Live link: 
-
-https://taskflow-clean.onrender.com
+## Live link: https://taskflow-clean.onrender.com
 
 # Explnations.
 The repository only has one persons commits, this is because of too many merge conflicts in our 
